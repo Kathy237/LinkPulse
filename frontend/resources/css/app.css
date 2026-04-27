@@ -1,0 +1,18 @@
+/*
+  Directives Tailwind CSS
+  Ces directives permettent à Tailwind d'injecter ses styles de base,
+  les composants et les utilitaires lors de la compilation avec Vite.
+*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Styles globaux pour l'esthétique "Google Antigravity"
+  On s'assure que le corps prend toute la hauteur et utilise notre couleur de fond claire.
+*/
+@layer base {
+  body {
+    @apply bg-background text-secondary antialiased min-h-screen;
+  }
+}
