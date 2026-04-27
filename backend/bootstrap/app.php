@@ -13,6 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
 
     ->withMiddleware(function (Middleware $middleware) {
+        // Configuration CORS pour permettre au frontend de communiquer avec le backend
+        $middleware->api(prepend: [
+            \Illuminate\Http\Middleware\HandleCors::class,
+        ]);
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\CheckAdmin::class,
         ]);
