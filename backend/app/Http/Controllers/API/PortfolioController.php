@@ -27,9 +27,15 @@ class PortfolioController extends Controller
      */
     public function index(Request $request)
     {
-        $portfolios = $request->user()->portfolios()
-            ->with(['projects', 'socialLinks', 'customLinks'])
-            ->get();
+        $query = $request->user()->portfolios()
+            ->with(['projects', 'socialLinks', 'customLinks']);
+
+        // Filtrage dynamique : ne retourne que les portfolios sans carte NFC associée
+        if ($request->boolean('unassociated')) {
+            $query->doesntHave('nfcCards');
+        }
+
+        $portfolios = $query->get();
 
         return PortfolioResource::collection($portfolios);
     }

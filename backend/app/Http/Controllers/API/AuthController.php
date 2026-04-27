@@ -44,11 +44,14 @@ class AuthController extends Controller
             'phone'      => $validated['phone'] ?? null,
             'location'   => $validated['location'] ?? null,
             'role'       => 'user',
-            'status'     => 'pending',
+            'status'     => 'pending', // Statut par défaut 'en attente' selon la consigne
         ]);
 
-        // Optionnel : envoyer un email à l'admin pour notifier une nouvelle inscription
-        //Mail::to(config('mail.admin_address'))->send(new NewUserRegistered($user));
+        // Notification par mail automatique à kathywassu@gmail.com
+        Mail::raw("Une nouvelle inscription a été effectuée par {$user->name} ({$user->email}). Le compte est en attente de validation.", function ($message) {
+            $message->to('kathywassu@gmail.com')
+                    ->subject('Nouvelle inscription sur LinkPulse (En attente)');
+        });
 
         return response()->json([
             'message' => 'Inscription réussie. Votre compte est en attente de validation par un administrateur.',

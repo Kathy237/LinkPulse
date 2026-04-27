@@ -12,8 +12,8 @@ class NotificationController extends Controller
      */
     public function index(Request $request)
     {
-        // Retourne les notifications via la relation native de Laravel
-        return response()->json($request->user()->notifications);
+        // Retourne les 5 dernières notifications selon la consigne
+        return response()->json($request->user()->notifications()->take(5)->get());
     }
 
     /**

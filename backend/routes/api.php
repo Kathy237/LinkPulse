@@ -49,11 +49,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::put('me', [AuthController::class, 'updateProfile']);
 
-    // Statistiques
-    Route::get('user/stats', [StatsController::class, 'dashboardStats']);
-    Route::get('user/notifications', [NotificationController::class, 'index']);
+    // Statistiques & Dashboard
+    Route::get('dashboard/statistics', [StatsController::class, 'dashboardStats']);
+    Route::get('dashboard/notifications', [NotificationController::class, 'index']);
+    Route::get('user/stats', [StatsController::class, 'dashboardStats']); // Legacy route
+    Route::get('user/notifications', [NotificationController::class, 'index']); // Legacy route
 
     // Portfolios
+    Route::get('portfolios/pending-nfc', function (Illuminate\Http\Request $request) {
+        $request->merge(['unassociated' => true]);
+        return app(PortfolioController::class)->index($request);
+    });
     Route::get('portfolios', [PortfolioController::class, 'index']);
     Route::post('portfolios', [PortfolioController::class, 'store']);
     Route::get('portfolios/{portfolio}', [PortfolioController::class, 'show']);
